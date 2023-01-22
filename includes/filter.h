@@ -11,7 +11,7 @@ struct filter_t {
     const size_t item_size;
 };
 
-typedef int(*filtering_callback_t)(void* item_ptr, size_t index);
+typedef void(*filtering_callback_t)(void*, size_t, int*);
 
 #define new_filter(_T) ((struct filter_t){NULL, 0L, sizeof(_T)})
 
@@ -19,8 +19,7 @@ typedef int(*filtering_callback_t)(void* item_ptr, size_t index);
 extern "C" {
 #endif // __cplusplus
 
-void filter(struct filter_t* dest, struct stream_t* stream, filtering_callback_t filtering_callback);
-void cleanup_filter(struct filter_t* filtered_items);
+size_t filter(struct filter_t* dest, struct stream_t* stream, filtering_callback_t filtering_callback);
 
 #if defined(__cplusplus)
 }
