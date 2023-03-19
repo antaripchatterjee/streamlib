@@ -11,13 +11,13 @@ enum stream_state_t {
 };
 
 struct stream_t {
-    void* ptr;
+    void* items;
     size_t length;
     const size_t item_size;
     enum stream_state_t state;
 };
 
-#define new_stream(_T) ((struct stream_t){NULL, 0L, sizeof(_T), SS_DECLARED})
+#define new_stream_t(_T) ((struct stream_t){NULL, 0L, sizeof(_T), SS_DECLARED})
 
 #if defined(__cplusplus)
 extern "C" {
