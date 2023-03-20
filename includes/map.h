@@ -13,11 +13,11 @@ struct map_t {
     void apply(char* item_ptr, size_t index, void* cb_res_ptr) { \
         *(_T*) cb_res_ptr = CB(*(_T*) item_ptr, index); \
     } \
-    struct map_t self ={ \
+    struct map_t this ={ \
         .apply = apply, \
         .data = new_stream_t(_T) \
     }; \
-    self; \
+    this; \
 })
 
 #if defined(__cplusplus)

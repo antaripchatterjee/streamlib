@@ -13,11 +13,11 @@ struct filter_t {
     void check(char* item_ptr, size_t index, void* cb_res_ptr) { \
         *(int*) cb_res_ptr = CB(*(_T*) item_ptr, index); \
     } \
-    struct filter_t self = { \
+    struct filter_t this = { \
         .check = check, \
         .data = new_stream_t(_T) \
     }; \
-    self; \
+    this; \
 })
 
 #if defined(__cplusplus)
