@@ -9,35 +9,32 @@ int map_squares(int item, size_t index) {
 }
 
 int main() {
-    int array[10] = {
+    int data[10] = {
         2, 3, 1, 18, 23,
         69, 93, 8, 69, 14
     };
     struct stream_t stream = new_stream_t(int);
-    make_stream(&stream, array, sizeof(array));
-    struct filter_t* evens = new_filter_t(filter_evens, int);
-    filter(evens, &stream);
-    printf("Found %lld evens\n", evens->dest.length);
-    for(size_t i = 0; i < evens->dest.length; i++) {
-        printf("Item %lld -> %d\n", i+1, ((int*) (evens->dest.items))[i]);
+    make_stream(&stream, data, sizeof(data));
+    struct filter_t evens = new_filter_t(filter_evens, int);
+    const size_t filtered_data_count = filter(&evens, &stream);
+    printf("Found %lld evens\n", filtered_data_count);
+    for(size_t i = 0; i < evens.data.length; i++) {
+        printf("Item %lld -> %d\n", i+1, ((int*) (evens.data.items))[i]);
     }
     
     printf("Stream with original values automatically cleaned up? %s\n", stream.state == SS_CLEANEDUP ? "Yes" : "No");
     cleanup_stream(&stream); // Does not do anything since stream has been cleaned up automatically
-
-    struct stream_t s_evens = new_stream_t(int);
-    to_stream(&s_evens, &(evens->dest));
-    free(evens);
-    // cleanup_fmr(&evens);
     
-    struct map_t* squares = new_map_t(map_squares, int);
-    map(squares, &s_evens);
-    printf("Found %lld squares\n", squares->dest.length);
-    for(size_t i = 0; i < squares->dest.length; i++) {
-        printf("Item %lld -> %d\n", i+1, ((int*) (squares->dest.items))[i]);
+    struct map_t squares = new_map_t(map_squares, int);
+    const size_t mapped_data_count = map(&squares, &(evens.data));
+    printf("Squared %lld values\n",mapped_data_count);
+    for(size_t i = 0; i < squares.data.length; i++) {
+        printf("Item %lld -> %d\n", i+1, ((int*) (squares.data.items))[i]);
     }
-    printf("Stream with even values automatically cleaned up? %s\n", s_evens.state == SS_CLEANEDUP ? "Yes" : "No");
-    cleanup_stream(&s_evens); // Does not do anything since stream has been cleaned up automatically
-    // cleanup_fmr(&squares);
+    printf("Stream with even values automatically cleaned up? %s\n", evens.data.state == SS_CLEANEDUP ? "Yes" : "No");
+    cleanup_stream(&(evens.data)); // Does not do anything since stream has been cleaned up automatically
+
+    cleanup_stream(&(squares.data)); // Cleaning squares
+    printf("Stream with squares values automatically cleaned up? %s\n", squares.data.state == SS_CLEANEDUP ? "Yes" : "No");
     return 0;
 }
