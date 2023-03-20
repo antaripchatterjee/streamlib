@@ -24,7 +24,7 @@ struct filter_t {
 extern "C" {
 #endif // __cplusplus
 
-const size_t filter(struct filter_t* target, struct stream_t* stream);
+size_t filter(struct filter_t* target, struct stream_t* stream);
 
 #if defined(__cplusplus)
 }

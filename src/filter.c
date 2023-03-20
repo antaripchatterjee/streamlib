@@ -1,6 +1,6 @@
 #include "filter.h"
 
-const size_t filter(struct filter_t* this, struct stream_t* stream) {
+size_t filter(struct filter_t* this, struct stream_t* stream) {
     size_t index = 0L;
     stream->state = SS_INPROGRESS;
     while(stream->length) {
@@ -21,5 +21,5 @@ const size_t filter(struct filter_t* this, struct stream_t* stream) {
     if(index > 0L) {
         this->data.state = SS_INITIALIZED;
     }
-    return (const size_t) index;
+    return index;
 }

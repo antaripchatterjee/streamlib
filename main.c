@@ -16,8 +16,8 @@ int main() {
     struct stream_t stream = new_stream_t(int);
     make_stream(&stream, data, sizeof(data));
     struct filter_t evens = new_filter_t(filter_evens, int);
-    const size_t filtered_data_count = filter(&evens, &stream);
-    printf("Found %lld evens\n", filtered_data_count);
+    size_t _count = filter(&evens, &stream);
+    printf("Found %lld evens\n", _count);
     for(size_t i = 0; i < evens.data.length; i++) {
         printf("Item %lld -> %d\n", i+1, ((int*) (evens.data.items))[i]);
     }
@@ -26,8 +26,8 @@ int main() {
     cleanup_stream(&stream); // Does not do anything since stream has been cleaned up automatically
     
     struct map_t squares = new_map_t(map_squares, int);
-    const size_t mapped_data_count = map(&squares, &(evens.data));
-    printf("Squared %lld values\n",mapped_data_count);
+    _count = map(&squares, &(evens.data));
+    printf("Squared %lld values\n",_count);
     for(size_t i = 0; i < squares.data.length; i++) {
         printf("Item %lld -> %d\n", i+1, ((int*) (squares.data.items))[i]);
     }

@@ -1,6 +1,6 @@
 #include "map.h"
 
-const size_t map(struct map_t* this, struct stream_t* stream){
+size_t map(struct map_t* this, struct stream_t* stream){
     size_t index = 0;
     stream->state = SS_INPROGRESS;
     this->data.items = malloc(stream->length * stream->item_size);
@@ -17,5 +17,5 @@ const size_t map(struct map_t* this, struct stream_t* stream){
     if(index > 0L) {
         this->data.state = SS_INITIALIZED;
     }
-    return (const size_t) index;
+    return index;
 }
