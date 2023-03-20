@@ -4,15 +4,8 @@
 #include "pch.h"
 #include "stream.h"
 
-// struct filtered_object_t{
-//     void* items;
-//     size_t length;
-//     size_t item_size;
-// };
-
 struct filter_t {
     void (*check)(char*, size_t, void*);
-    // struct filtered_object_t dest;
     struct stream_t data;
 };
 

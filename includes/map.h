@@ -4,12 +4,6 @@
 #include "pch.h"
 #include "stream.h"
 
-// struct mapped_object_t{
-//     void* items;
-//     size_t length;
-//     size_t item_size;
-// };
-
 struct map_t {
     void (*apply)(char*, size_t, void*);
     struct stream_t data;
