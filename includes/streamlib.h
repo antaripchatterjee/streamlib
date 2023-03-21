@@ -1,5 +1,5 @@
-#if !defined(__FMR_H__)
-#define __FMR_H__
+#if !defined(__STREAMLIB_H__)
+#define __STREAMLIB_H__
 
 #include "stream.h"
 #include "filter.h"
@@ -9,10 +9,10 @@
 extern "C" {
 #endif // __cplusplus
 
-void cleanup_fmr(void* fmr_object);
+// void cleanup_fmr(void* fmr_object);
 
 #if defined(__cplusplus)
 }
 #endif // __cplusplus
 
-#endif // __FMR_H__
+#endif // __STREAMLIB_H__
