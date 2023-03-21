@@ -9,7 +9,7 @@ size_t map(struct map_t* this, struct stream_t* stream, void* cb_ptr) {
         char* item_ptr = next_item_from_stream(stream);
         if(item_ptr) {
             void* cb_res_ptr = this->data.items + index * this->data.item_size;
-            this->apply(item_ptr, (const size_t) index, cb_ptr, cb_res_ptr);            
+            this->apply(item_ptr, (const size_t) index, cb_ptr, cb_res_ptr);
             free(item_ptr);
             index++;
         }
