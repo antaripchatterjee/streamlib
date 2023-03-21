@@ -10,8 +10,8 @@ AR=ar
 
 
 
-all: main.o stream.o filter.o fmr.o map.o
-	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJECTS)/main.o $(OBJECTS)/stream.o $(OBJECTS)/filter.o $(OBJECTS)/fmr.o $(OBJECTS)/map.o -o fmr 
+all: main.o stream.o filter.o streamlib.o map.o
+	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJECTS)/main.o $(OBJECTS)/stream.o $(OBJECTS)/filter.o $(OBJECTS)/streamlib.o $(OBJECTS)/map.o -o streamlib_test 
 
 filter.o: $(SOURCES)/filter.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/filter.c -o $(OBJECTS)/filter.o
@@ -19,8 +19,8 @@ filter.o: $(SOURCES)/filter.c
 stream.o: $(SOURCES)/stream.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/stream.c -o $(OBJECTS)/stream.o
 
-fmr.o: $(SOURCES)/fmr.c
-	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/fmr.c -o $(OBJECTS)/fmr.o
+streamlib.o: $(SOURCES)/streamlib.c
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/streamlib.c -o $(OBJECTS)/streamlib.o
 
 map.o: $(SOURCES)/map.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/map.c -o $(OBJECTS)/map.o
@@ -34,5 +34,5 @@ clean:
 	rm -rf $(BUILD_D)/*.a
 	rm -rf $(BUILD_D)/*.dll
 	rm -rf $(BUILD_R)/*.dll
-	rm -f fmr.exe
-	rm -f fmr
+	rm -f streamlib_test.exe
+	rm -f streamlib_test

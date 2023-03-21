@@ -1,13 +1,12 @@
 #include "filter.h"
 
-size_t filter(struct filter_t* this, struct stream_t* stream) {
+size_t filter(struct filter_t* this, struct stream_t* stream, void* cb_ptr) {
     size_t index = 0L;
     stream->state = SS_INPROGRESS;
     while(stream->length) {
         char* item_ptr = next_item_from_stream(stream);
         if(item_ptr) {
-            int cb_res;
-            this->check(item_ptr, index, &cb_res);
+            int cb_res = this->check(item_ptr, (const size_t) index, cb_ptr);
             if(cb_res) {
                 this->data.items = this->data.length == 0L ?
                     malloc(this->data.item_size) :
