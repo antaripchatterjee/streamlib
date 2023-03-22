@@ -10,8 +10,11 @@ AR=ar
 
 
 
-all: main.o stream.o filter.o streamlib.o map.o
-	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJECTS)/main.o $(OBJECTS)/stream.o $(OBJECTS)/filter.o $(OBJECTS)/streamlib.o $(OBJECTS)/map.o -o streamlib_test 
+all: main.o stream.o filter.o streamlib.o map.o reduce.o
+	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJECTS)/main.o $(OBJECTS)/stream.o $(OBJECTS)/filter.o $(OBJECTS)/streamlib.o $(OBJECTS)/map.o $(OBJECTS)/reduce.o -o streamlib_test 
+
+reduce.o: $(SOURCES)/reduce.c
+	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/reduce.c -o $(OBJECTS)/reduce.o
 
 filter.o: $(SOURCES)/filter.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/filter.c -o $(OBJECTS)/filter.o

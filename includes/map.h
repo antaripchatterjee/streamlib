@@ -15,7 +15,7 @@ struct map_t {
     } \
     struct map_t this ={ \
         .apply = apply, \
-        .data = new_stream_t(_IT) \
+        .data = new_stream_t(_RT) \
     }; \
     this; \
 })

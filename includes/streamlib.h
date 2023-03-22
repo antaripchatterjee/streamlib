@@ -4,6 +4,7 @@
 #include "stream.h"
 #include "filter.h"
 #include "map.h"
+#include "reduce.h"
 
 #if defined(__cplusplus)
 extern "C" {
