@@ -19,7 +19,7 @@ int main() {
     };
     struct stream_t stream = new_stream_t(int);
     make_stream(&stream, data, sizeof(data));
-    struct filter_t evens = new_filter_t(int);
+    struct filter_t evens = new_filter_t(int)();
     size_t _count = filter(&evens, &stream, select_evens);
     printf("Found %lld evens\n", _count);
     for(size_t i = 0; i < evens.data.length; i++) {
@@ -29,7 +29,7 @@ int main() {
     printf("Stream with original values automatically cleaned up? %s\n", stream.state == SS_CLEANEDUP ? "Yes" : "No");
     cleanup_stream(&stream); // Does not do anything since stream has been cleaned up automatically
     
-    struct map_t squares = new_map_t(int, int);
+    struct map_t squares = new_map_t(int, int)();
     _count = map(&squares, &(evens.data), get_squares);
     printf("Squared %lld values\n",_count);
     for(size_t i = 0; i < squares.data.length; i++) {

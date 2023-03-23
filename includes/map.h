@@ -17,7 +17,11 @@ struct map_t {
         .apply = apply, \
         .data = new_stream_t(_RT) \
     }; \
-    this; \
+    struct map_t init() { \
+        this.apply = apply; \
+        return this; \
+    } \
+    init; \
 })
 
 #if defined(__cplusplus)
