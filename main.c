@@ -38,11 +38,11 @@ int main() {
     printf("Stream with even values automatically cleaned up? %s\n", evens.data.state == SS_CLEANEDUP ? "Yes" : "No");
     cleanup_stream(&(evens.data)); // Does not do anything since stream has been cleaned up automatically
     
-    int result = 0; // set initial value
-    struct reduce_t sum = new_reduce_t(int, int)(&result);
-    reduce(&sum, &(squares.data), sum_squares);
+    int sum = 0; // set initial value
+    struct reduce_t reducer = new_reduce_t(int, int)(&sum);
+    reduce(&reducer, &(squares.data), sum_squares);
     printf("Stream with squares values automatically cleaned up? %s\n", squares.data.state == SS_CLEANEDUP ? "Yes" : "No");
     cleanup_stream(&(squares.data)); // Does not do anything since stream has been cleaned up automatically
-    printf("Sum of squares of evens: %d\n", result);
+    printf("Sum of squares of evens: %d\n", sum);
     return 0;
 }
