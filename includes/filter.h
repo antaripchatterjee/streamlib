@@ -14,10 +14,13 @@ struct filter_t {
         return ((int(*)(_IT, const size_t))cb_ptr)((*(_IT*) item_ptr), index); \
     } \
     struct filter_t this = { \
-        .check = check, \
         .data = new_stream_t(_IT) \
     }; \
-    this; \
+    struct filter_t init() { \
+        this.check = check; \
+        return this; \
+    } \
+    init; \
 })
 
 #if defined(__cplusplus)
