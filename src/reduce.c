@@ -2,7 +2,7 @@
 
 void reduce(struct reduce_t* this, struct stream_t* stream, void* cb_ptr) {
     size_t index = 0L;
-    stream->state = SS_INPROGRESS;
+    stream->state = SS_INUSE;
     while(stream->length) {
         char* item_ptr = next_item_from_stream(stream);
         if(item_ptr) {

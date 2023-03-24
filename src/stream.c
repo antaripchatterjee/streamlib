@@ -4,7 +4,7 @@ void make_stream(struct stream_t* stream, void* data_ptr, size_t data_size) {
     stream->items = malloc(data_size);
     memmove(stream->items, data_ptr, data_size);
     stream->length = data_size/stream->item_size;
-    stream->state = SS_INITIALIZED;
+    stream->state = SS_SET;
 }
 
 void to_stream(struct stream_t* stream, void* src) {
@@ -13,16 +13,16 @@ void to_stream(struct stream_t* stream, void* src) {
 }
 
 void cleanup_stream(struct stream_t* stream) {
-    if(stream->state == SS_INITIALIZED || stream->state == SS_INPROGRESS) {
+    if(stream->state == SS_SET || stream->state == SS_INUSE) {
         free(stream->items);
         stream->items = NULL;
         stream->length = 0L;
-        stream->state = SS_CLEANEDUP;
+        stream->state = SS_USED;
     }
 }
 
 char* next_item_from_stream(struct stream_t* stream) {
-    if(stream->state == SS_INPROGRESS) {
+    if(stream->state == SS_INUSE) {
         char* item_ptr = (char*) malloc(stream->item_size);
         memmove(item_ptr, stream->items, stream->item_size);
         if(--stream->length > 0) {

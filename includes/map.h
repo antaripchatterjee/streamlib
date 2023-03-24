@@ -5,8 +5,8 @@
 #include "stream.h"
 
 struct map_t {
-    void (*apply)(char*, const size_t, void*, void*);
     struct stream_t data;
+    void (*apply)(char*, const size_t, void*, void*);
 };
 
 #define new_map_t(_RT, _IT) ({ \
@@ -14,8 +14,7 @@ struct map_t {
         *(_RT*) cb_res_ptr = ((_RT(*)(_IT, const size_t))cb_ptr)(*(_IT*) item_ptr, index); \
     } \
     struct map_t this ={ \
-        .apply = apply, \
-        .data = new_stream_t(_RT) \
+        .data = new_stream_t(_RT)() \
     }; \
     struct map_t init() { \
         this.apply = apply; \
