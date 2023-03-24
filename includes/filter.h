@@ -5,8 +5,8 @@
 #include "stream.h"
 
 struct filter_t {
-    int (*check)(char*, const size_t, void*);
     struct stream_t data;
+    int(*check)(char*, const size_t, void*);
 };
 
 #define new_filter_t(_IT) ({ \
@@ -14,7 +14,7 @@ struct filter_t {
         return ((int(*)(_IT, const size_t))cb_ptr)((*(_IT*) item_ptr), index); \
     } \
     struct filter_t this = { \
-        .data = new_stream_t(_IT) \
+        .data = new_stream_t(_IT)() \
     }; \
     struct filter_t init() { \
         this.check = check; \

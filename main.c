@@ -17,32 +17,32 @@ int main() {
         2, 3, 1, 18, 23,
         69, 93, 8, 69, 14
     };
-    struct stream_t stream = new_stream_t(int);
+    struct stream_t stream = new_stream_t(int)();
     make_stream(&stream, data, sizeof(data));
     struct filter_t evens = new_filter_t(int)();
-    size_t _count = filter(&evens, &stream, select_evens);
-    printf("Found %lld evens\n", _count);
-    for(size_t i = 0; i < evens.data.length; i++) {
-        printf("Item %lld -> %d\n", i+1, ((int*) (evens.data.items))[i]);
+    filter(&evens, &stream, select_evens);
+    if(stream.state == SS_USED) {
+        puts("Stream of integers already cleaned up");
+    } else {
+        cleanup(&stream); // Does not do anything since stream has been cleaned up automatically
     }
-    
-    printf("Stream with original values automatically cleaned up? %s\n", stream.state == SS_CLEANEDUP ? "Yes" : "No");
-    cleanup_stream(&stream); // Does not do anything since stream has been cleaned up automatically
     
     struct map_t squares = new_map_t(int, int)();
-    _count = map(&squares, &(evens.data), get_squares);
-    printf("Squared %lld values\n",_count);
-    for(size_t i = 0; i < squares.data.length; i++) {
-        printf("Item %lld -> %d\n", i+1, ((int*) (squares.data.items))[i]);
+    map(&squares, &(evens.data), get_squares);
+    if(evens.data.state == SS_USED) {
+        puts("Stream of evens already cleaned up");
+    } else {
+        cleanup(&evens); // Does not do anything since stream has been cleaned up automatically
     }
-    printf("Stream with even values automatically cleaned up? %s\n", evens.data.state == SS_CLEANEDUP ? "Yes" : "No");
-    cleanup_stream(&(evens.data)); // Does not do anything since stream has been cleaned up automatically
-    
+
     int sum = 0; // set initial value
     struct reduce_t reducer = new_reduce_t(int, int)(&sum);
     reduce(&reducer, &(squares.data), sum_squares);
-    printf("Stream with squares values automatically cleaned up? %s\n", squares.data.state == SS_CLEANEDUP ? "Yes" : "No");
-    cleanup_stream(&(squares.data)); // Does not do anything since stream has been cleaned up automatically
+    if(squares.data.state == SS_USED) {
+        puts("Stream of squares already cleaned up");
+    } else {
+        cleanup(&squares); // Does not do anything since stream has been cleaned up automatically
+    }
     printf("Sum of squares of evens: %d\n", sum);
     return 0;
 }

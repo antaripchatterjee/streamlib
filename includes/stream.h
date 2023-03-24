@@ -4,10 +4,10 @@
 #include "pch.h"
 
 enum stream_state_t {
-    SS_DECLARED = -1,
-    SS_INITIALIZED,
-    SS_INPROGRESS,
-    SS_CLEANEDUP
+    SS_INIT = -1,
+    SS_SET,
+    SS_INUSE,
+    SS_USED
 };
 
 struct stream_t {
@@ -17,7 +17,12 @@ struct stream_t {
     enum stream_state_t state;
 };
 
-#define new_stream_t(_T) ((struct stream_t){NULL, 0L, sizeof(_T), SS_DECLARED})
+#define new_stream_t(_T) ({ \
+    struct stream_t init() { \
+        return (struct stream_t){NULL, 0L, sizeof(_T), SS_INIT}; \
+    } \
+    init; \
+})
 
 #if defined(__cplusplus)
 extern "C" {

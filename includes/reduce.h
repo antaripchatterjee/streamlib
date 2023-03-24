@@ -5,8 +5,8 @@
 #include "stream.h"
 
 struct reduce_t {
-    void (*apply)(char*, const size_t, void*, void*);
     struct {void* result_ptr; const size_t size; } data;
+    void (*apply)(char*, const size_t, void*, void*);
 };
 
 #define new_reduce_t(_RT, _IT) ({ \
