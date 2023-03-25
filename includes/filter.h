@@ -27,7 +27,7 @@ struct filter_t {
 extern "C" {
 #endif // __cplusplus
 
-size_t filter(struct filter_t* this, struct stream_t* stream, void* cb_ptr);
+void filter(struct filter_t* this, struct stream_t* stream, void* cb_ptr);
 
 #if defined(__cplusplus)
 }
