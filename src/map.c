@@ -1,6 +1,6 @@
 #include "map.h"
 
-size_t map(struct map_t* this, struct stream_t* stream, void* cb_ptr) {
+void map(struct map_t* this, struct stream_t* stream, void* cb_ptr) {
     size_t index = 0;
     stream->state = SS_INUSE;
     this->data.items = malloc(stream->length * stream->item_size);
@@ -17,5 +17,4 @@ size_t map(struct map_t* this, struct stream_t* stream, void* cb_ptr) {
     if(index > 0L) {
         this->data.state = SS_SET;
     }
-    return index;
 }

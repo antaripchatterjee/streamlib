@@ -7,11 +7,6 @@ void make_stream(struct stream_t* stream, void* data_ptr, size_t data_size) {
     stream->state = SS_SET;
 }
 
-void to_stream(struct stream_t* stream, void* src) {
-    __auto_type data = (struct {void* items; size_t length; const size_t item_size;} *) src;
-    make_stream(stream, data->items, data->length * data->item_size);
-}
-
 void cleanup_stream(struct stream_t* stream) {
     if(stream->state == SS_SET || stream->state == SS_INUSE) {
         free(stream->items);
@@ -38,4 +33,16 @@ char* next_item_from_stream(struct stream_t* stream) {
         return item_ptr;
     }
     return NULL;    
+}
+
+void for_each(struct stream_t* stream, void* cb_ptr) {
+    size_t index = 0;
+    stream->state = SS_INUSE;
+    while(stream->length) {
+        char* item_ptr = next_item_from_stream(stream);
+        if(item_ptr) {
+            stream->call(item_ptr, (const size_t)(index++), cb_ptr);
+            free(item_ptr);
+        }
+    }
 }

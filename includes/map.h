@@ -27,7 +27,7 @@ struct map_t {
 extern "C" {
 #endif // __cplusplus
 
-size_t map(struct map_t* this, struct stream_t* stream, void* cb_ptr);
+void map(struct map_t* this, struct stream_t* stream, void* cb_ptr);
 
 #if defined(__cplusplus)
 }
