@@ -1,7 +1,7 @@
 #include "includes/streamlib.h"
 
-int select_evens(int item, const size_t index) {
-    return item % 2 == 0;
+int select_evens(void* item_ptr, const size_t index) {
+    return item_ptr && (*(int*)item_ptr) % 2 == 0;
 }
 
 int get_squares(int item, const size_t index) {
@@ -13,7 +13,7 @@ int sum_squares(int prev_item, int curr_item, const size_t index) {
 }
 
 void for_each_callback(int item, const size_t index) {
-    printf("Found %d at %lld\n", item, index);
+    printf("Found %d at %zu\n", item, index);
 }
 
 int main() {
@@ -21,11 +21,22 @@ int main() {
         2, 3, 1, 18, 23,
         69, 93, 8, 69, 14
     };
-    struct stream_t stream = new_stream_t(int)();
-    make_stream(&stream, data, sizeof(data));
-    struct filter_t evens = new_filter_t(int)();
-    filter(&evens, &stream, select_evens);
-    for_each(&(evens.data), for_each_callback);
+    // struct stream_t stream = new_stream_t(int)();
+    struct stream_t stream = init_stream_t(sizeof(int));
+    if(!make_stream(&stream, data, sizeof(data))) return -1;
+    // printf("%zu %zu\n", stream.length);
+    struct stream_t evens = init_stream_t(sizeof(int));
+    if(!make_stream(&evens, NULL, sizeof(data)));
+    filter(&stream, &evens, &select_evens);
+    int i;
+    evens.state = SS_INUSE;
+    while(next_item_from_stream(&evens, &i)) {
+        printf("%d is even\n", i);
+    }
+    printf("state %d $%zu\n", evens.state, evens.length);
+    // struct filter_t evens = new_filter_t(int)();
+    // filter(&evens, &stream, select_evens);
+    // for_each(&(evens.data), for_each_callback);
     // if(stream.state == SS_USED) {
     //     puts("Stream of integers already cleaned up");
     // } else {

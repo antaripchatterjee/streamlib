@@ -10,8 +10,13 @@ AR=ar
 
 
 
-all: main.o stream.o filter.o streamlib.o map.o reduce.o
+all: create_dir main.o stream.o filter.o streamlib.o map.o reduce.o
 	$(CC) $(CFLAGS) -I$(INCLUDES) $(OBJECTS)/main.o $(OBJECTS)/stream.o $(OBJECTS)/filter.o $(OBJECTS)/streamlib.o $(OBJECTS)/map.o $(OBJECTS)/reduce.o -o streamlib_test 
+
+create_dir:
+	mkdir -p $(OBJECTS)
+	mkdir -p $(BUILD_D)
+	mkdir -p $(BUILD_R)
 
 reduce.o: $(SOURCES)/reduce.c
 	$(CC) $(CFLAGS) -I$(INCLUDES) -c $(SOURCES)/reduce.c -o $(OBJECTS)/reduce.o

@@ -1,48 +1,53 @@
 #include "stream.h"
 
-void make_stream(struct stream_t* stream, void* data_ptr, size_t data_size) {
-    stream->items = malloc(data_size);
-    memmove(stream->items, data_ptr, data_size);
-    stream->length = data_size/stream->item_size;
-    stream->state = SS_SET;
+int make_stream(struct stream_t* stream, void* data_ptr, size_t alloc_size) {
+    stream->items = malloc(alloc_size);
+    if(stream->items == NULL) return 0;
+    memset(stream->items, 0, alloc_size);
+    stream->capacity = alloc_size/stream->item_size;
+    if(data_ptr != NULL) {
+        memmove(stream->items, data_ptr, alloc_size);
+        stream->length = alloc_size/stream->item_size;
+        stream->state = SS_SET;
+    } else {
+        stream->state = SS_ALLOC;
+    }
+    return 1;
 }
 
 void cleanup_stream(struct stream_t* stream) {
     if(stream->state == SS_SET || stream->state == SS_INUSE) {
-        free(stream->items);
+        if(stream->items) free(stream->items);
         stream->items = NULL;
-        stream->length = 0L;
+        stream->capacity = stream->length = 0L;
         stream->state = SS_USED;
     }
 }
 
-char* next_item_from_stream(struct stream_t* stream) {
-    if(stream->state == SS_INUSE) {
-        char* item_ptr = (char*) malloc(stream->item_size);
+
+void* next_item_from_stream(struct stream_t* stream, void* item_ptr) {
+    if(stream && stream->state == SS_INUSE && item_ptr) {
         memmove(item_ptr, stream->items, stream->item_size);
-        if(--stream->length > 0) {
-            const size_t memory_block_size = stream->length * stream->item_size;
-            void* _temp_ptr = malloc(memory_block_size);
-            memmove(_temp_ptr, stream->items + stream->item_size, memory_block_size);
-            stream->items = realloc(stream->items, memory_block_size);
-            memmove(stream->items, _temp_ptr, memory_block_size);
-            free(_temp_ptr);
-        } else {
+        if (stream->length > 1) {
+            memmove(stream->items, stream->items + stream->item_size, (stream->length - 1) * stream->item_size);
+        }
+        stream->length--;
+        if(stream->length == 0) {
             cleanup_stream(stream);
         }
         return item_ptr;
     }
-    return NULL;    
+    return NULL;
 }
 
-void for_each(struct stream_t* stream, void* cb_ptr) {
-    size_t index = 0;
-    stream->state = SS_INUSE;
-    while(stream->length) {
-        char* item_ptr = next_item_from_stream(stream);
-        if(item_ptr) {
-            stream->call(item_ptr, (const size_t)(index++), cb_ptr);
-            free(item_ptr);
-        }
-    }
-}
+// void for_each(struct stream_t* stream, void* cb_ptr) {
+//     size_t index = 0;
+//     stream->state = SS_INUSE;
+//     while(stream->length) {
+//         char* item_ptr = next_item_from_stream(stream);
+//         if(item_ptr) {
+//             stream->call(item_ptr, (const size_t)(index++), cb_ptr);
+//             free(item_ptr);
+//         }
+//     }
+// }
